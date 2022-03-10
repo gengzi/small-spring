@@ -21,6 +21,14 @@ public abstract class AbstractBeanFactory extends DefaultSingtonBeanRegistry imp
      * @return
      */
     public Object getBean(String beanName) {
+        return doGetBean(beanName);
+    }
+
+    public Object getBean(String beanName, Object... args) {
+        return doGetBean(beanName, args);
+    }
+
+    private Object doGetBean(String beanName, Object... args) {
         // 从单例池中获取
         Object singleton = this.getSingleton(beanName);
         if (singleton != null) {
@@ -28,7 +36,7 @@ public abstract class AbstractBeanFactory extends DefaultSingtonBeanRegistry imp
         }
         // 注册创建bean
         BeanDefinition beanDefinition = this.getBeanDefinition(beanName);
-        return createBean(beanName, beanDefinition);
+        return createBean(beanName, beanDefinition, args);
 
     }
 
@@ -48,7 +56,7 @@ public abstract class AbstractBeanFactory extends DefaultSingtonBeanRegistry imp
      * @param beanDefinition bean定义信息
      * @return
      */
-    protected abstract Object createBean(String beanName, BeanDefinition beanDefinition);
+    protected abstract Object createBean(String beanName, BeanDefinition beanDefinition, Object... args);
 
 
 }
